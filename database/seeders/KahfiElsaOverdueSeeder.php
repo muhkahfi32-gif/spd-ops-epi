@@ -7,8 +7,7 @@ use App\Models\Travel;
 use App\Models\Employee;
 use App\Models\SuratDinas;
 use App\Models\ReminderLog;
-use Illuminate\Support\Facades\DB;
-use Carbon\Carbon;
+use Illuminate\Support\Facades\Schema;
 
 class KahfiElsaOverdueSeeder extends Seeder
 {
@@ -18,13 +17,13 @@ class KahfiElsaOverdueSeeder extends Seeder
     public function run(): void
     {
         // 1. Bersihkan Data Perjalanan, Surat Dinas, & Log Reminder Terlebih Dahulu
-        DB::statement('SET FOREIGN_KEY_CHECKS=0;');
+        Schema::disableForeignKeyConstraints();
         DB::table('reminder_logs')->truncate();
         DB::table('employee_surat_dinas')->truncate();
         DB::table('surat_dinas')->truncate();
         DB::table('employee_travel')->truncate();
         DB::table('travels')->truncate();
-        DB::statement('SET FOREIGN_KEY_CHECKS=1;');
+        Schema::enableForeignKeyConstraints();
 
         // 2. Ambil / Buat Pegawai Muhammad Kahfi & Elsa Erianti
         $kahfi = Employee::firstOrCreate(
