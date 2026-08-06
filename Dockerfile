@@ -25,8 +25,16 @@ COPY conf/nginx/sites-available/default.conf /etc/nginx/sites-enabled/default.co
 COPY scripts/custom-script.sh /var/www/html/scripts/custom-script.sh
 RUN chmod +x /var/www/html/scripts/custom-script.sh
 
-# Prepare database and set permissions
+# Prepare storage directories and database file
+RUN mkdir -p /var/www/html/storage/framework/views \
+    /var/www/html/storage/framework/sessions \
+    /var/www/html/storage/framework/cache \
+    /var/www/html/storage/logs \
+    /var/www/html/bootstrap/cache \
+    /var/www/html/database
+
 RUN touch /var/www/html/database/database.sqlite
+RUN chmod -R 777 /var/www/html/storage /var/www/html/bootstrap/cache /var/www/html/database
 RUN chown -R www-data:www-data /var/www/html/storage /var/www/html/bootstrap/cache /var/www/html/database
 
 EXPOSE 80
