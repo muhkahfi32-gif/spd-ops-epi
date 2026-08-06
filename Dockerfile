@@ -12,6 +12,7 @@ ENV PHP_ERRORS_STDERR 1
 ENV RUN_SCRIPTS 1
 ENV REAL_IP_HEADER 1
 ENV COMPOSER_ALLOW_SUPERUSER 1
+ENV LOG_CHANNEL stderr
 
 # Install composer dependencies during build
 RUN composer install --no-dev --optimize-autoloader --no-interaction --ignore-platform-reqs
@@ -20,12 +21,12 @@ RUN composer install --no-dev --optimize-autoloader --no-interaction --ignore-pl
 COPY conf/nginx/sites-available/default.conf /etc/nginx/sites-available/default.conf
 COPY conf/nginx/sites-available/default.conf /etc/nginx/sites-enabled/default.conf
 
-# Prepare SQLite database file & seed initial data
-RUN touch /var/www/html/database/database.sqlite && \
-    php artisan migrate --force && \
-    php artisan db:seed --class=KahfiElsaOverdueSeeder --force
+# Custom boot script setup
+COPY scripts/custom-script.sh /var/www/html/scripts/custom-script.sh
+RUN chmod +x /var/www/html/scripts/custom-script.sh
 
-# Set directory permissions
+# Prepare database and set permissions
+RUN touch /var/www/html/database/database.sqlite
 RUN chown -R www-data:www-data /var/www/html/storage /var/www/html/bootstrap/cache /var/www/html/database
 
 EXPOSE 80
