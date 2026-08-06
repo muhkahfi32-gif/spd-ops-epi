@@ -16,8 +16,14 @@ ENV COMPOSER_ALLOW_SUPERUSER 1
 # Install composer dependencies during build
 RUN composer install --no-dev --optimize-autoloader --no-interaction --ignore-platform-reqs
 
-# Prepare SQLite database file
-RUN touch /var/www/html/database/database.sqlite
+# Copy custom Nginx configuration for Laravel routing
+COPY conf/nginx/sites-available/default.conf /etc/nginx/sites-available/default.conf
+COPY conf/nginx/sites-available/default.conf /etc/nginx/sites-enabled/default.conf
+
+# Prepare SQLite database file & seed initial data
+RUN touch /var/www/html/database/database.sqlite && \
+    php artisan migrate --force && \
+    php artisan db:seed --class=KahfiElsaOverdueSeeder --force
 
 # Set directory permissions
 RUN chown -R www-data:www-data /var/www/html/storage /var/www/html/bootstrap/cache /var/www/html/database
