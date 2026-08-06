@@ -6,8 +6,9 @@ use Illuminate\Database\Seeder;
 use App\Models\Travel;
 use App\Models\Employee;
 use App\Models\SuratDinas;
-use App\Models\ReminderLog;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Schema;
+use Carbon\Carbon;
 
 class KahfiElsaOverdueSeeder extends Seeder
 {
