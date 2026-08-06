@@ -1,6 +1,16 @@
 # SPD OPS EPI & KIT - Sistem Manajemen Perjalanan Dinas
 
-Sistem Informasi Manajemen Perjalanan Dinas (SPD) berbasis web untuk melakukan pendataan, pengelolaan, monitoring rencana dan realisasi perjalanan dinas per pegawai dan per layanan aplikasi, rekapitulasi Surat Dinas, serta Pusat Pengingat (WA Reminder Center) secara dinamis, akurat, dan terstruktur.
+Sistem Informasi Manajemen Perjalanan Dinas (SPD) berbasis web untuk pendataan, pengelolaan, monitoring rencana dan realisasi perjalanan dinas per pegawai dan per layanan aplikasi, rekapitulasi Surat Dinas, serta Pusat Pengingat WhatsApp (WA Reminder Center) secara dinamis, akurat, dan terstruktur.
+
+---
+
+## 🌐 Live Demo & Deployment
+
+- **Website Live**: [https://spd-ops-epi.onrender.com](https://spd-ops-epi.onrender.com)
+- **Akun Administrator**:
+  - **Email**: `admin@spd.com`
+  - **Password**: `password123`
+- **Deployment Platform**: Render.com (Docker Container + Nginx + PHP 8.2 + SSL HTTPS)
 
 ---
 
@@ -23,7 +33,7 @@ Sistem Informasi Manajemen Perjalanan Dinas (SPD) berbasis web untuk melakukan p
 
 - **📲 WA Reminder Center (Pusat Pengingat WhatsApp)**:
   - Monitoring otomatis tagihan / perjalanan dinas *overdue* (menunggak pencairan/pelaporan) atau mendekati tenggat.
-  - **Kirim Pengingat Tunggal & Massal (Send All)**: Pengiriman pesan pengingat WhatsApp ke pegawai secara instan.
+  - **Kirim Pengingat Tunggal & Massal (Send All)**: Pengiriman pesan pengingat WhatsApp ke pegawai secara instan via API Fonnte.
   - **Histori & Audit Log**: Pencatatan riwayat pengiriman reminder (`reminder_logs`) lengkap dengan status, tanggal kirim, dan nomor penerima.
 
 - **🖨️ Cetak Dokumen SPD (Printable Layout)**:
@@ -52,18 +62,20 @@ Sistem Informasi Manajemen Perjalanan Dinas (SPD) berbasis web untuk melakukan p
 ## 🛠️ Teknologi & Stack
 
 - **Framework Backend**: Laravel 11.x (PHP 8.2+)
-- **Database**: MySQL / MariaDB
+- **Database**: MySQL / SQLite (Database-Agnostic Querying)
+- **Containerization & Web Server**: Docker, Nginx, PHP-FPM
 - **Frontend / UI**: Laravel Blade, Vanilla CSS (Design Tokens & Utility Classes), Remixicon 4.2
 - **Visualisasi Data**: Chart.js 4.x
 - **Pengujian**: PHPUnit / Laravel Test Suite (29 test cases / 77 assertions)
 
 ---
 
-## 📥 Panduan Instalasi & Jalankan
+## 📥 Panduan Instalasi Lokal
 
 1. **Clone & Masuk ke Direktori Project**:
    ```bash
-   cd c:/laragon/www/spd-ops-epi
+   git clone https://github.com/muhkahfi32-gif/spd-ops-epi.git
+   cd spd-ops-epi
    ```
 
 2. **Install Dependensi Composer**:
@@ -76,16 +88,15 @@ Sistem Informasi Manajemen Perjalanan Dinas (SPD) berbasis web untuk melakukan p
    cp .env.example .env
    php artisan key:generate
    ```
-   *Pastikan kredensial database pada `.env` telah disesuaikan.*
 
 4. **Migrasi Database & Seed Data**:
    ```bash
    php artisan migrate:fresh --seed
    ```
 
-5. **(Opsional) Seed Data Overdue & Testing Reminder**:
+5. **Seed Data Overdue Testing**:
    ```bash
-   php artisan db:seed --class=AbdulRosyiOverdueSeeder
+   php artisan db:seed --class=KahfiElsaOverdueSeeder
    ```
 
 6. **Jalankan Server Lokal**:
@@ -115,45 +126,6 @@ Sistem Informasi Manajemen Perjalanan Dinas (SPD) berbasis web untuk melakukan p
 
 ---
 
-## 📂 Struktur Aplikasi
-
-```text
-spd-ops-epi/
-├── app/
-│   ├── Http/Controllers/
-│   │   ├── DashboardController.php   # Controller Utama Dashboard & Chart
-│   │   ├── TravelController.php      # CRUD Perjalanan Dinas, Export, Print, Bulk Delete
-│   │   ├── EmployeeController.php    # CRUD & JSON Pegawai
-│   │   ├── SuratDinasController.php  # CRUD & Export Rekap Surat Dinas
-│   │   ├── ReminderController.php    # Pusat WA Reminder & Log Audit
-│   │   └── ReportController.php      # Laporan & Rekapitulasi
-│   └── Models/                       # Employee, Travel, SuratDinas, ReminderLog
-├── database/
-│   ├── migrations/                   # Skema Tabel & Relasi DB
-│   └── seeders/                      # DatabaseSeeder & AbdulRosyiOverdueSeeder
-├── resources/views/
-│   ├── dashboard/                    # View Dashboard Monitoring
-│   ├── travels/                      # View Travel Index, Modal, Print SPD
-│   ├── surat-dinas/                  # View Surat Dinas Index & Form
-│   ├── reminders/                    # View WA Reminder Center & History
-│   ├── employees/                    # View Manajemen Pegawai
-│   └── reports/                      # View Laporan Bulanan/Tahunan
-└── routes/
-    └── web.php                       # Definisi Route Middleware Auth & Resource
-```
-
----
-
-## 🧪 Pengujian Otomatis (Testing)
-
-Jalankan perintah berikut untuk mengeksekusi seluruh pengujian otomatis:
-```bash
-php artisan test
-```
-
----
-
 ## 📄 Lisensi
 
 Sistem Perjalanan Dinas SPD OPS EPI & KIT dikembangkan untuk kebutuhan internal manajemen perjalanan dinas.
-
