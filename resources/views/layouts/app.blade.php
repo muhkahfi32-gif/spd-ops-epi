@@ -629,6 +629,14 @@
                 @endif
             </a>
 
+            <a href="{{ route('calendar.index') }}" class="nav-item {{ request()->routeIs('calendar.*') ? 'active' : '' }}">
+                <div class="nav-left"><i class="ri-calendar-event-line"></i><span>Kalender Aktivitas</span></div>
+            </a>
+
+            <a href="{{ route('cek-spd.index') }}" target="_blank" class="nav-item">
+                <div class="nav-left"><i class="ri-search-eye-line" style="color: #38bdf8;"></i><span>Portal Cek NIP (Public)</span></div>
+            </a>
+
             <div class="sidebar-divider"></div>
             <div class="nav-section-title">Notifikasi & Monitoring</div>
             

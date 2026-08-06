@@ -7,11 +7,21 @@ use App\Http\Controllers\ReportController;
 use App\Http\Controllers\ReminderController;
 use App\Http\Controllers\SuratDinasController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\CekSpdController;
+use App\Http\Controllers\CalendarController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
     return redirect()->route('login');
 });
+
+// Portal Cek Status SPD Publik (Tanpa Login / View-Only untuk Pegawai)
+Route::get('/cek-spd', [CekSpdController::class, 'index'])->name('cek-spd.index');
+Route::get('/cek-spd/search', [CekSpdController::class, 'search'])->name('cek-spd.search');
+
+// Kalender Interaktif (Bisa diakses publik / admin)
+Route::get('/calendar', [CalendarController::class, 'index'])->name('calendar.index');
+Route::get('/calendar/events', [CalendarController::class, 'events'])->name('calendar.events');
 
 Route::middleware(['auth'])->group(function () {
     // Dashboard
@@ -52,4 +62,4 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/reports/monthly', [ReportController::class, 'monthly'])->name('reports.monthly');
 });
 
-require __DIR__.'/auth.php';    
+require __DIR__.'/auth.php';
