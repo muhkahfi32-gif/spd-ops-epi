@@ -12,10 +12,11 @@ if [ ! -f /var/www/html/.env ]; then
     cp /var/www/html/.env.example /var/www/html/.env
 fi
 
-# Force set APP_ENV to production, debug, and SQLite DB
-sed -i 's/APP_ENV=.*/APP_ENV=production/' /var/www/html/.env
-sed -i 's/APP_DEBUG=.*/APP_DEBUG=true/' /var/www/html/.env
-sed -i 's/DB_CONNECTION=.*/DB_CONNECTION=sqlite/' /var/www/html/.env
+# Force set APP_ENV to production, debug, HTTPS URL, and SQLite DB
+sed -i 's|APP_ENV=.*|APP_ENV=production|' /var/www/html/.env
+sed -i 's|APP_DEBUG=.*|APP_DEBUG=true|' /var/www/html/.env
+sed -i 's|APP_URL=.*|APP_URL=https://spd-ops-epi.onrender.com|' /var/www/html/.env
+sed -i 's|DB_CONNECTION=.*|DB_CONNECTION=sqlite|' /var/www/html/.env
 
 # Always ensure APP_KEY is generated
 php artisan key:generate --force
