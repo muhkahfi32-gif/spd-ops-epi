@@ -14,7 +14,7 @@ ENV REAL_IP_HEADER 1
 ENV COMPOSER_ALLOW_SUPERUSER 1
 
 # Install composer dependencies during build
-RUN composer install --no-dev --optimize-autoloader --no-interaction
+RUN composer install --no-dev --optimize-autoloader --no-interaction --ignore-platform-reqs
 
 # Prepare SQLite database file
 RUN touch /var/www/html/database/database.sqlite
