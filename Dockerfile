@@ -3,7 +3,7 @@ FROM richarvey/nginx-php-fpm:latest
 # Working directory
 WORKDIR /var/www/html
 
-# Copy all project files
+# Copy all project files (includes pre-compiled public/build assets)
 COPY . /var/www/html
 
 # Environment configuration for Nginx & PHP FPM
@@ -13,11 +13,6 @@ ENV RUN_SCRIPTS 1
 ENV REAL_IP_HEADER 1
 ENV COMPOSER_ALLOW_SUPERUSER 1
 ENV LOG_CHANNEL stderr
-
-# Install Node.js and build Vite production assets
-RUN apk add --no-cache nodejs npm && \
-    npm install && \
-    npm run build
 
 # Install composer dependencies during build
 RUN composer install --no-dev --optimize-autoloader --no-interaction --ignore-platform-reqs
