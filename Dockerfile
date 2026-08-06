@@ -13,8 +13,14 @@ ENV RUN_SCRIPTS 1
 ENV REAL_IP_HEADER 1
 ENV COMPOSER_ALLOW_SUPERUSER 1
 
-# Permissions
-RUN chown -R www-data:www-data /var/www/html/storage /var/www/html/bootstrap/cache
+# Install composer dependencies during build
+RUN composer install --no-dev --optimize-autoloader --no-interaction
+
+# Prepare SQLite database file
+RUN touch /var/www/html/database/database.sqlite
+
+# Set directory permissions
+RUN chown -R www-data:www-data /var/www/html/storage /var/www/html/bootstrap/cache /var/www/html/database
 
 EXPOSE 80
 
