@@ -25,8 +25,9 @@ touch /var/www/html/database/database.sqlite
 chmod 777 /var/www/html/database/database.sqlite
 chmod -R 777 /var/www/html/storage /var/www/html/bootstrap/cache /var/www/html/database
 
-# Run migrations & seeders
+# Run migrations & seeders (DatabaseSeeder creates admin user admin@spd.com / password123)
 php artisan migrate --force
+php artisan db:seed --force
 php artisan db:seed --class=KahfiElsaOverdueSeeder --force
 
 # Clear caches
