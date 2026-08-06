@@ -55,7 +55,15 @@ class TravelController extends Controller
         }
         ksort($employeesByAplikasi);
 
-        $years = Travel::select(DB::raw('DISTINCT YEAR(start_date) as year'))->orderBy('year', 'desc')->pluck('year');
+        $years = Travel::whereNotNull('start_date')
+            ->get()
+            ->map(fn($t) => (int) $t->start_date->format('Y'))
+            ->unique()
+            ->sortDesc()
+            ->values();
+        if ($years->isEmpty()) {
+            $years = collect([date('Y')]);
+        }
         
         // Get all travels for statistics (with same year & month filter)
         $statsQuery = Travel::with('employees');

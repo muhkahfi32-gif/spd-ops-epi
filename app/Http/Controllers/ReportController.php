@@ -61,7 +61,15 @@ class ReportController extends Controller
             'total_days' => $allTravels->sum(fn($t) => $t->duration),
         ];
         
-        $years = Travel::select(DB::raw('DISTINCT YEAR(start_date) as year'))->orderBy('year', 'desc')->pluck('year');
+        $years = Travel::whereNotNull('start_date')
+            ->get()
+            ->map(fn($t) => (int) $t->start_date->format('Y'))
+            ->unique()
+            ->sortDesc()
+            ->values();
+        if ($years->isEmpty()) {
+            $years = collect([date('Y')]);
+        }
         
         return view('reports.index', compact('monthlyReports', 'statistics', 'year', 'years'));
     }

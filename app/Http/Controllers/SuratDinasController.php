@@ -74,9 +74,15 @@ class SuratDinasController extends Controller
         }
         ksort($employeesByAplikasi);
 
-        $years = SuratDinas::select(DB::raw('DISTINCT YEAR(tanggal_surat) as year'))
-            ->orderBy('year', 'desc')
-            ->pluck('year');
+        $years = SuratDinas::whereNotNull('tanggal_surat')
+            ->get()
+            ->map(fn($s) => (int) $s->tanggal_surat->format('Y'))
+            ->unique()
+            ->sortDesc()
+            ->values();
+        if ($years->isEmpty()) {
+            $years = collect([date('Y')]);
+        }
 
         return view('surat-dinas.index', compact(
             'suratList', 'stats', 'employees', 'employeesByAplikasi', 'travels',
